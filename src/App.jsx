@@ -1,18 +1,22 @@
-import './App.css'
+import {Routes, Route, useLocation} from "react-router-dom";
+import {AnimatePresence} from "framer-motion";
+import Home from "./Pages/Home";
+import Login from "./Pages/Login";
+import Register from "./Pages/Register";
 
 function App() {
+  const location = useLocation();
+
   return (
-    <div className="flex justify-center h-screen w-scree bg-[#090040]">
-      <div className="w-full h-15 bg-[#040020]
-      text-[#FF0066] flex justify-between p-4 
-      items-center rounded-lg shadow-lg">
-        <h1 className="text-4xl font-bold">Banco Maneiro</h1>
-        <button className="flex bg-[#FF0066] text-white 
-        px-8 py-2 rounded ml-4">Entrar</button>
-      </div>
-    </div>
-  )
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    </AnimatePresence>
+  );
 }
 
 export default App;
-
