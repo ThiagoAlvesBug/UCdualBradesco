@@ -53,13 +53,16 @@ function Login() {
             </Link>
           </div>
 
-          {/* Botão Entrar */}
-          <button
-            type="submit"
-            className="mt-4 bg-[#FF007F] hover:bg-[#D6006A] 
-            transition text-white font-semibold py-2 rounded-lg">
-            Entrar
-          </button>
+          {/* Botão Entrar */} 
+        <div className="text-center mt-6">
+          <Link to="/dashboard">
+            <button className="bg-[#FF0066] text-white 
+            px-6 py-2 rounded-lg hover:bg-[#be004c] transition">
+              Entrar
+            </button>
+          </Link>
+        </div>
+
         </form>
 
         {/* Criar conta */}

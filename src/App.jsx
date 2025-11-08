@@ -3,6 +3,7 @@ import {AnimatePresence} from "framer-motion";
 import Home from "./Pages/Home";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
+import Dashboard from "./Pages/Dashboard";
 
 function App() {
   const location = useLocation();
@@ -14,6 +15,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </AnimatePresence>
   );

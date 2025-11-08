@@ -19,13 +19,14 @@ function Home() {
         {/* Botões */}
         <div className="flex space-x-4">
           <Link to="/login">
-            <button className="bg-[#FF0066] text-white px-6 py-2 rounded-lg hover:bg-[#be004c] transition">
+            <button className="bg-[#FF0066] font-bold text-white 
+            px-6 py-2 rounded-lg hover:bg-[#be004c] transition">
               Login
             </button>
           </Link>
 
           <Link to="/register">
-            <button className="border border-[#FF0066] text-[#FF0066]
+            <button className="border border-[#FF0066] text-[#FF0066] font-bold
              px-6 py-2 rounded-lg hover:bg-[#FF0066] hover:text-white transition">
               Registrar
             </button>
@@ -39,8 +40,12 @@ function Home() {
           Bem-vindo ao Banco Maneiro
         </h2>
         <p className="text-lg max-w-xl mb-8 text-gray-300">
-          Seu banco digital moderno, seguro e prático.
+          Seu banco digital seguro, prático e muito maneiro.
         </p>
+        <button className="bg-[#FF0066] font-bold text-white px-10 
+        py-4 rounded-lg hover:bg-[#be004c] transition">
+          Abra sua conta
+        </button>
       </main>
 
       {/* Rodapé */}
