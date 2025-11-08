@@ -42,10 +42,13 @@ function Home() {
         <p className="text-lg max-w-xl mb-8 text-gray-300">
           Seu banco digital seguro, prático e muito maneiro.
         </p>
-        <button className="bg-[#FF0066] font-bold text-white px-10 
-        py-4 rounded-lg hover:bg-[#be004c] transition">
-          Abra sua conta
-        </button>
+
+        <Link to="/register">
+          <button className="bg-[#FF0066] font-bold text-white px-10 
+          py-4 rounded-lg hover:bg-[#be004c] transition">
+            Abra sua conta
+          </button>
+        </Link>
       </main>
 
       {/* Rodapé */}
