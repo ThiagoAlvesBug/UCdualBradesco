@@ -11,4 +11,10 @@ UC Dual Bradesco
 - Hover = #be004c;
 - Footer = #040020;
 
+endereço (residencial/comercial)
+nome da mãe
+profissão
+celular
+
+
 

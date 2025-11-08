@@ -3,7 +3,6 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -11,16 +10,15 @@
     "preview": "vite preview",
     "deploy": "vite build && gh-pages -d dist"
   },
-
   "dependencies": {
     "@tailwindcss/vite": "^4.1.16",
     "framer-motion": "^12.23.24",
+    "lucide-react": "^0.553.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.9.5",
     "tailwindcss": "^4.1.16"
   },
-
   "devDependencies": {
     "@eslint/js": "^9.36.0",
     "@types/react": "^19.1.16",

@@ -3,31 +3,32 @@ import {Link} from "react-router-dom";
 import "../App.css";
 
 function Home() {
-    {/* Transição entre telas */}
   return (
     <motion.div
-      className="flex flex-col min-h-screen bg-[#141333] text-white"
+      className="flex flex-col min-h-screen bg-[#141333] text-white overflow-x-hidden"
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -30 }}
-      transition={{ duration: 0.5 }}>
-        
+      transition={{ duration: 0.5 }}
+    >
       {/* Cabeçalho */}
-      <header className="w-full bg-[#0c0c22] text-[#FF0066] flex justify-between items-center p-4 shadow-lg">
-        <h1 className="text-3xl font-bold">Banco Maneiro</h1>
+      <header className="w-full bg-[#0c0c22] text-[#FF0066] flex flex-col sm:flex-row justify-between items-center p-4 sm:p-6 shadow-lg">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-2 sm:mb-0 text-center sm:text-left">
+          Banco Maneiro
+        </h1>
 
         {/* Botões */}
-        <div className="flex space-x-4">
+        <div className="flex space-x-3 sm:space-x-4">
           <Link to="/login">
             <button className="bg-[#FF0066] font-bold text-white 
-            px-6 py-2 rounded-lg hover:bg-[#be004c] transition">
+              px-5 py-2 rounded-lg hover:bg-[#be004c] transition text-sm sm:text-base">
               Login
             </button>
           </Link>
 
           <Link to="/register">
             <button className="border border-[#FF0066] text-[#FF0066] font-bold
-             px-6 py-2 rounded-lg hover:bg-[#FF0066] hover:text-white transition">
+              px-5 py-2 rounded-lg hover:bg-[#FF0066] hover:text-white transition text-sm sm:text-base">
               Registrar
             </button>
           </Link>
@@ -35,24 +36,25 @@ function Home() {
       </header>
 
       {/* Main */}
-      <main className="flex flex-col grow justify-center items-center text-center px-4">
-        <h2 className="text-5xl font-bold mb-4 text-[#FF0066]">
+      <main className="flex flex-col grow justify-center items-center text-center px-6 py-10 sm:px-10">
+        <h2 className="text-3xl sm:text-5xl font-bold mb-4 text-[#FF0066] leading-tight">
           Bem-vindo ao Banco Maneiro
         </h2>
-        <p className="text-lg max-w-xl mb-8 text-gray-300">
+
+        <p className="text-base sm:text-lg max-w-md sm:max-w-xl mb-8 text-gray-300">
           Seu banco digital seguro, prático e muito maneiro.
         </p>
 
         <Link to="/register">
-          <button className="bg-[#FF0066] font-bold text-white px-10 
-          py-4 rounded-lg hover:bg-[#be004c] transition">
+          <button className="bg-[#FF0066] font-bold text-white px-8 sm:px-10 
+            py-3 sm:py-4 rounded-lg hover:bg-[#be004c] transition text-sm sm:text-lg">
             Abra sua conta
           </button>
         </Link>
       </main>
 
       {/* Rodapé */}
-      <footer className="bg-[#040020] text-center py-4 text-sm text-gray-400">
+      <footer className="bg-[#040020] text-center py-4 text-xs sm:text-sm text-gray-400 mt-auto">
         © {new Date().getFullYear()} Banco Maneiro. Todos os direitos reservados.
       </footer>
     </motion.div>
