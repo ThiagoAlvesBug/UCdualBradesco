@@ -1,6 +1,7 @@
-import {motion} from "framer-motion";
-import {useState} from "react";
-import {useNavigate, Link} from "react-router-dom";
+import { motion } from "framer-motion";
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { login } from "../services/authService";
 
 function Login() {
   const navigate = useNavigate();
@@ -9,28 +10,48 @@ function Login() {
   const [error, setError] = useState("");
 
   const handleLogin = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // evita reload da página
+    setError("");
+    console.log("Login iniciado..."); // 🔹 log inicial
 
     try {
-      const response = await fetch("http://localhost:5000/login", {
+      login({ email, password: senha });
+      /*const response = await fetch("http://localhost:8080/auth/login", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, senha }),
+        headers: { 
+          "Content-Type": "application/json" 
+        },
+        body: JSON.stringify({ email, password: senha })
       });
 
-      const data = await response.json();
+      console.log("Resposta do servidor:", response.status); // 🔹 log status
 
-      if (response.ok && data.success) {
-        // Salva o usuário em um localStorage
-        localStorage.setItem("user", JSON.stringify(data.user));
-
-        // Redirecionando para a dashboard
-        navigate("/dashboard");
-      } else {
+      if (!response.ok) {
         setError("E-mail ou senha incorretos!");
+        return;
       }
+
+      const data = await response.json();
+      console.log("Dados recebidos do servidor:", data); // 🔹 log do JSON
+
+      if (!data.token) {
+        setError("Resposta inválida do servidor.");
+        return;
+      }
+
+      // Guardar token e userId no localStorage
+      localStorage.setItem("token", data.token);
+      console.log("Token armazenado no localStorage:", data.token);
+
+      localStorage.setItem("userId", data.userId);
+      console.log("userId armazenado no localStorage:", data.userId);
+*/
+      // Redirecionar para dashboard
+      navigate("/dashboard");
+      console.log("Navegando para /dashboard"); // 🔹 log do navigate
+
     } catch (err) {
-      console.error(err);
+      console.error("Erro no fetch:", err);
       setError("Erro ao conectar ao servidor.");
     }
   };
@@ -41,13 +62,14 @@ function Login() {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -30 }}
-      transition={{ duration: 0.5, ease: "easeInOut" }}>
+      transition={{ duration: 0.5, ease: "easeInOut" }}
+    >
       <div className="bg-[#111133] w-full max-w-md p-6 rounded-2xl shadow-xl border border-[#1e1e3f]">
         <h1 className="text-3xl font-bold text-[#FF007F] text-center mb-6">
           Entrar na Conta
         </h1>
 
-        <form className="flex flex-col space-y-4" onSubmit={handleLogin}>
+        <form className="flex flex-col space-y-4" onSubmit={handleLogin} autoComplete="off">
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-1">
               E-mail
@@ -58,7 +80,9 @@ function Login() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="seuemail@exemplo.com"
               className="w-full px-4 py-2 rounded-lg bg-[#1b1b3a] text-white 
-              focus:outline-none focus:ring-2 focus:ring-[#FF007F] placeholder-gray-400"/>
+              focus:outline-none focus:ring-2 focus:ring-[#FF007F] placeholder-gray-400"
+              required
+            />
           </div>
 
           <div>
@@ -71,7 +95,9 @@ function Login() {
               onChange={(e) => setSenha(e.target.value)}
               placeholder="Digite sua senha"
               className="w-full px-4 py-2 rounded-lg bg-[#1b1b3a] text-white 
-               focus:outline-none focus:ring-2 focus:ring-[#FF007F] placeholder-gray-400"/>
+               focus:outline-none focus:ring-2 focus:ring-[#FF007F] placeholder-gray-400"
+              required
+            />
           </div>
 
           {error && (
@@ -81,7 +107,8 @@ function Login() {
           <div className="mt-6">
             <button
               type="submit"
-              className="bg-[#FF0066] w-full text-white py-3 rounded-lg font-semibold hover:bg-[#be004c] transition">
+              className="cursor-pointer bg-[#FF0066] w-full text-white py-3 rounded-lg font-semibold hover:bg-[#be004c] transition"
+            >
               Entrar
             </button>
           </div>
@@ -92,7 +119,8 @@ function Login() {
             Ainda não tem uma conta?{" "}
             <Link
               to="/register"
-              className="text-[#FF007F] hover:underline hover:text-[#ff3399]">
+              className="text-[#FF007F] hover:underline hover:text-[#ff3399]"
+            >
               Registrar
             </Link>
           </p>

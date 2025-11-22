@@ -1,12 +1,11 @@
-import {motion} from "framer-motion";
-import {Link, useNavigate} from "react-router-dom";
-import {useState} from "react";
-import {Eye, EyeOff} from "lucide-react";
+import { motion } from "framer-motion";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 function Register() {
   const navigate = useNavigate();
 
-  // Campos vazios por padrão
   const [formData, setFormData] = useState({
     nome: "",
     celular: "",
@@ -15,23 +14,20 @@ function Register() {
     confirmarSenha: "",
   });
 
-  // States para visibilidade e mensagens
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  // Atualizar campos de maneira dinamica
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  // Validações da senha
+  // Validações de senha
   const hasNumber = /\d/.test(formData.senha);
   const hasUpper = /[A-Z]/.test(formData.senha);
   const hasLower = /[a-z]/.test(formData.senha);
   const hasSpecial = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(formData.senha);
 
-  // Enviando para o back
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -43,25 +39,30 @@ function Register() {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/register", {
+      const response = await fetch("http://localhost:8080/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          nome: formData.nome,
-          celular: formData.celular,
+          name: formData.nome,
           email: formData.email,
-          senha: formData.senha,
+          phone: formData.celular,
+          password: formData.senha,
         }),
       });
 
-      const data = await response.json();
+      if (!response.ok) {
+        const errData = await response.json().catch(() => null);
 
-      if (data.success) {
-        setSuccess("Conta criada com sucesso! Redirecionando...");
-        setTimeout(() => navigate("/login"), 2000);
-      } else {
-        setError(data.message || "Erro ao registrar. Tente novamente.");
+        if (response.status === 409) {
+          setError("E-mail já cadastrado.");
+        } else {
+          setError(errData?.message || "Erro ao registrar. Tente novamente.");
+        }
+        return;
       }
+
+      setSuccess("Conta criada com sucesso! Redirecionando...");
+      setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
       setError("Falha na conexão com o servidor.");
     }
@@ -76,7 +77,6 @@ function Register() {
       exit={{ opacity: 0, y: -30 }}
       transition={{ duration: 0.5, ease: "easeInOut" }}
     >
-      {/* Card de Registro */}
       <div className="bg-[#111133] w-full max-w-md sm:max-w-lg 
       p-6 sm:p-8 rounded-2xl shadow-xl border border-[#1e1e3f]">
         <h1 className="text-2xl sm:text-3xl font-bold text-[#FF007F] text-center mb-6">
@@ -98,7 +98,8 @@ function Register() {
               required
               className="w-full px-4 py-2 rounded-lg bg-[#1b1b3a] text-white 
               focus:outline-none focus:ring-2 focus:ring-[#FF007F] 
-              placeholder-gray-400 text-sm sm:text-base"/>
+              placeholder-gray-400 text-sm sm:text-base"
+            />
           </div>
 
           {/* Celular */}
@@ -118,10 +119,13 @@ function Register() {
               className="w-full px-4 py-2 rounded-lg bg-[#1b1b3a] text-white 
               focus:outline-none focus:ring-2 focus:ring-[#FF007F] 
               placeholder-gray-400 text-sm sm:text-base"
-              onInput={(e) => (e.target.value = e.target.value.replace(/\D/g, ""))}/>
+              onInput={(e) =>
+                (e.target.value = e.target.value.replace(/\D/g, ""))
+              }
+            />
           </div>
 
-          {/* E-mail */}
+          {/* Email */}
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-1">
               E-mail
@@ -135,7 +139,8 @@ function Register() {
               required
               className="w-full px-4 py-2 rounded-lg bg-[#1b1b3a] text-white 
               focus:outline-none focus:ring-2 focus:ring-[#FF007F] 
-              placeholder-gray-400 text-sm sm:text-base"/>
+              placeholder-gray-400 text-sm sm:text-base"
+            />
           </div>
 
           {/* Senha */}
@@ -143,6 +148,7 @@ function Register() {
             <label className="block text-sm font-medium text-gray-300 mb-1">
               Senha
             </label>
+
             <div className="relative">
               <input
                 name="senha"
@@ -153,17 +159,19 @@ function Register() {
                 required
                 className="w-full px-4 py-2 pr-10 rounded-lg bg-[#1b1b3a] text-white 
                 focus:outline-none focus:ring-2 focus:ring-[#FF007F] 
-                placeholder-gray-400 text-sm sm:text-base"/>
+                placeholder-gray-400 text-sm sm:text-base"
+              />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 
-                text-gray-400 cursor-pointer hover:text-[#FF007F] transition">
+                text-gray-400 cursor-pointer hover:text-[#FF007F] transition"
+              >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
 
-            {/* Requisitos de senha (validação) */}
+            {/* Regras de senha */}
             <ul className="text-xs mt-2 space-y-1">
               <li className={hasNumber ? "text-green-400" : "text-gray-400"}>
                 • Contém números
@@ -171,7 +179,8 @@ function Register() {
               <li
                 className={
                   hasUpper && hasLower ? "text-green-400" : "text-gray-400"
-                }>
+                }
+              >
                 • Letras maiúsculas e minúsculas
               </li>
               <li className={hasSpecial ? "text-green-400" : "text-gray-400"}>
@@ -185,6 +194,7 @@ function Register() {
             <label className="block text-sm font-medium text-gray-300 mb-1">
               Confirmar senha
             </label>
+
             <div className="relative">
               <input
                 name="confirmarSenha"
@@ -195,15 +205,21 @@ function Register() {
                 required
                 className="w-full px-4 py-2 pr-10 rounded-lg bg-[#1b1b3a] text-white 
                 focus:outline-none focus:ring-2 focus:ring-[#FF007F] 
-                placeholder-gray-400 text-sm sm:text-base"/>
+                placeholder-gray-400 text-sm sm:text-base"
+              />
               <button
                 type="button"
                 onClick={() =>
                   setShowConfirmPassword(!showConfirmPassword)
                 }
                 className="absolute right-3 top-1/2 -translate-y-1/2 
-                cursor-pointer text-gray-400 hover:text-[#FF007F] transition">
-                {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                cursor-pointer text-gray-400 hover:text-[#FF007F] transition"
+              >
+                {showConfirmPassword ? (
+                  <EyeOff size={18} />
+                ) : (
+                  <Eye size={18} />
+                )}
               </button>
             </div>
           </div>
@@ -216,7 +232,8 @@ function Register() {
           <button
             type="submit"
             className="mt-4 bg-[#FF007F] hover:bg-[#D6006A] transition cursor-pointer
-            text-white font-semibold py-2 sm:py-3 rounded-lg w-full text-sm sm:text-base">
+            text-white font-semibold py-2 sm:py-3 rounded-lg w-full text-sm sm:text-base"
+          >
             Registrar
           </button>
         </form>
@@ -227,7 +244,8 @@ function Register() {
             Já tem uma conta?{" "}
             <Link
               to="/login"
-              className="text-[#FF007F] hover:underline cursor-pointer hover:text-[#ff3399]">
+              className="text-[#FF007F] hover:underline cursor-pointer hover:text-[#ff3399]"
+            >
               Fazer login
             </Link>
           </p>
@@ -236,7 +254,8 @@ function Register() {
             <button
               className="border border-[#FF007F] text-[#FF007F] 
             px-6 py-2 rounded-lg hover:bg-[#FF007F] hover:text-white 
-            cursor-pointer transition text-sm sm:text-base">
+            cursor-pointer transition text-sm sm:text-base"
+            >
               Voltar para o início
             </button>
           </Link>
