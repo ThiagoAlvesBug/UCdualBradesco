@@ -10,51 +10,27 @@ function Login() {
   const [error, setError] = useState("");
 
   const handleLogin = async (e) => {
-    e.preventDefault(); // evita reload da página
-    setError("");
-    console.log("Login iniciado..."); // 🔹 log inicial
+  e.preventDefault();
+  setError("");
 
-    try {
-      login({ email, password: senha });
-      /*const response = await fetch("http://localhost:8080/auth/login", {
-        method: "POST",
-        headers: { 
-          "Content-Type": "application/json" 
-        },
-        body: JSON.stringify({ email, password: senha })
-      });
+  try {
+    const data = await login({ email, password: senha });
 
-      console.log("Resposta do servidor:", response.status); // 🔹 log status
+    console.log("Dados recebidos do servidor:", data);
 
-      if (!response.ok) {
-        setError("E-mail ou senha incorretos!");
-        return;
-      }
+    // Salvar no localStorage
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("userId", data.userId);
 
-      const data = await response.json();
-      console.log("Dados recebidos do servidor:", data); // 🔹 log do JSON
+    // Redirecionar corretamente
+    navigate(`/dashboard/${data.userId}`);
 
-      if (!data.token) {
-        setError("Resposta inválida do servidor.");
-        return;
-      }
+  } catch (err) {
+    console.error("Erro no login:", err);
+    setError("Credenciais inválidas ou erro no servidor.");
+  }
+};
 
-      // Guardar token e userId no localStorage
-      localStorage.setItem("token", data.token);
-      console.log("Token armazenado no localStorage:", data.token);
-
-      localStorage.setItem("userId", data.userId);
-      console.log("userId armazenado no localStorage:", data.userId);
-*/
-      // Redirecionar para dashboard
-      navigate("/dashboard");
-      console.log("Navegando para /dashboard"); // 🔹 log do navigate
-
-    } catch (err) {
-      console.error("Erro no fetch:", err);
-      setError("Erro ao conectar ao servidor.");
-    }
-  };
 
   return (
     <motion.div

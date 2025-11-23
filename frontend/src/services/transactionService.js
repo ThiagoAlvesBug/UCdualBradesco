@@ -4,9 +4,11 @@ import { getToken, getUserId } from "./authService";
 const API_URL = "http://localhost:8082/transactions";
 
 function authHeader() {
+  const token = getToken();
+
   return {
     "Content-Type": "application/json",
-    "Authorization": `Bearer ${getToken()}`
+    ...(token ? { "Authorization": `Bearer ${token}` } : {})
   };
 }
 
@@ -15,44 +17,59 @@ function getCurrentUserId() {
   return getUserId();
 }
 
+async function request(url, options = {}) {
+  try {
+    const response = await fetch(url, {
+      ...options,
+      headers: {
+        ...authHeader(),
+        ...(options.headers || {})
+      }
+    });
+
+    // Se não for JSON, tenta retornar como texto
+    const contentType = response.headers.get("content-type");
+
+    if (!response.ok) {
+      const errorText = contentType?.includes("application/json")
+        ? await response.json()
+        : await response.text();
+
+      throw new Error(errorText?.message || errorText || "Erro na requisição");
+    }
+
+    return contentType?.includes("application/json")
+      ? await response.json()
+      : await response.text();
+
+  } catch (err) {
+    console.error("Erro no request:", err);
+    throw err;
+  }
+}
+
 export async function getBalance() {
   const userId = getCurrentUserId();
-  const response = await fetch(`${API_URL}/balance/${userId}`, {
-    method: "GET",
-    headers: authHeader()
-  });
-
-  return await response.json();
+  return await request(`${API_URL}/balance/${userId}`);
 }
 
 export async function getTransactions() {
   const userId = getCurrentUserId();
-  const response = await fetch(`${API_URL}/${userId}`, {
-    method: "GET",
-    headers: authHeader()
-  });
-
-  return await response.json();
+  return await request(`${API_URL}/${userId}`);
 }
 
 export async function deposit(amount) {
   const userId = getCurrentUserId();
-  const response = await fetch(`${API_URL}/deposit`, {
+  return await request(`${API_URL}/deposit`, {
     method: "POST",
-    headers: authHeader(),
     body: JSON.stringify({ userId, amount })
   });
-
-  return await response.text();
 }
 
 export async function transfer(toUserId, amount, description) {
   const fromUserId = getCurrentUserId();
-  const response = await fetch(`${API_URL}/transfer`, {
+  return await request(`${API_URL}/transfer`, {
     method: "POST",
-    headers: authHeader(),
     body: JSON.stringify({ fromUserId, toUserId, amount, description })
   });
-
-  return await response.text();
 }
