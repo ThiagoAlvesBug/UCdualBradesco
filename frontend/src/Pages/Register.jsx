@@ -8,7 +8,6 @@ function Register() {
 
   const [formData, setFormData] = useState({
     nome: "",
-    celular: "",
     email: "",
     senha: "",
     confirmarSenha: "",
@@ -45,7 +44,6 @@ function Register() {
         body: JSON.stringify({
           name: formData.nome,
           email: formData.email,
-          phone: formData.celular,
           password: formData.senha,
         }),
       });
@@ -99,29 +97,6 @@ function Register() {
               className="w-full px-4 py-2 rounded-lg bg-[#1b1b3a] text-white 
               focus:outline-none focus:ring-2 focus:ring-[#FF007F] 
               placeholder-gray-400 text-sm sm:text-base"
-            />
-          </div>
-
-          {/* Celular */}
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1">
-              Celular
-            </label>
-            <input
-              name="celular"
-              type="text"
-              placeholder="Seu número de celular"
-              value={formData.celular}
-              onChange={handleChange}
-              inputMode="numeric"
-              pattern="[0-9]*"
-              required
-              className="w-full px-4 py-2 rounded-lg bg-[#1b1b3a] text-white 
-              focus:outline-none focus:ring-2 focus:ring-[#FF007F] 
-              placeholder-gray-400 text-sm sm:text-base"
-              onInput={(e) =>
-                (e.target.value = e.target.value.replace(/\D/g, ""))
-              }
             />
           </div>
 
