@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { toast } from "react-toastify";
+import { login } from "../services/authService";
 
 function Register() {
   const navigate = useNavigate();
@@ -14,7 +16,6 @@ function Register() {
   });
 
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -27,12 +28,25 @@ function Register() {
   const hasLower = /[a-z]/.test(formData.senha);
   const hasSpecial = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(formData.senha);
 
+  const passwordMatches =
+    formData.senha.length > 0 && formData.senha === formData.confirmarSenha;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
 
-    if (formData.senha !== formData.confirmarSenha) {
+    if (
+      hasNumber === false ||
+      hasUpper === false ||
+      hasLower === false ||
+      hasSpecial === false
+    ) {
+      toast.error("Senha inválida!");
+      return;
+    }
+
+    if (!passwordMatches) {
       setError("As senhas não coincidem!");
       return;
     }
@@ -60,7 +74,14 @@ function Register() {
       }
 
       setSuccess("Conta criada com sucesso! Redirecionando...");
-      setTimeout(() => navigate("/login"), 2000);
+
+      const data = await login({ email: formData.email, password: formData.senha });
+      // Salvar no localStorage
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("userId", data.userId);
+
+      // Redirecionar corretamente
+      navigate(`/dashboard/${data.userId}`);
     } catch (err) {
       setError("Falha na conexão com o servidor.");
     }
@@ -75,8 +96,10 @@ function Register() {
       exit={{ opacity: 0, y: -30 }}
       transition={{ duration: 0.5, ease: "easeInOut" }}
     >
-      <div className="bg-[#111133] w-full max-w-md sm:max-w-lg 
-      p-6 sm:p-8 rounded-2xl shadow-xl border border-[#1e1e3f]">
+      <div
+        className="bg-[#111133] w-full max-w-md sm:max-w-lg 
+      p-6 sm:p-8 rounded-2xl shadow-xl border border-[#1e1e3f]"
+      >
         <h1 className="text-2xl sm:text-3xl font-bold text-[#FF007F] text-center mb-6">
           Crie sua Conta
         </h1>
@@ -173,7 +196,7 @@ function Register() {
             <div className="relative">
               <input
                 name="confirmarSenha"
-                type={showConfirmPassword ? "text" : "password"}
+                type={showPassword ? "text" : "password"}
                 placeholder="Repita sua senha"
                 value={formData.confirmarSenha}
                 onChange={handleChange}
@@ -184,19 +207,22 @@ function Register() {
               />
               <button
                 type="button"
-                onClick={() =>
-                  setShowConfirmPassword(!showConfirmPassword)
-                }
+                onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 
                 cursor-pointer text-gray-400 hover:text-[#FF007F] transition"
               >
-                {showConfirmPassword ? (
-                  <EyeOff size={18} />
-                ) : (
-                  <Eye size={18} />
-                )}
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
+
+            {/* Regras de senha */}
+            <ul className="text-xs mt-2 space-y-1">
+              <li
+                className={passwordMatches ? "text-green-400" : "text-gray-400"}
+              >
+                • Senhas coincidem
+              </li>
+            </ul>
           </div>
 
           {/* Mensagens */}

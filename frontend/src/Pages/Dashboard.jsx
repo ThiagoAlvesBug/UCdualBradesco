@@ -170,7 +170,7 @@ function Dashboard() {
               <nav className="space-y-3">
                 <button
                   onClick={() =>
-                    toast.info("⚙ Ops! Funcionalidade em construção.")
+                    toast.info("Ops! Funcionalidade em construção.")
                   }
                   className="w-full text-left px-4 py-2 rounded-lg hover:bg-[#FF0066]/20 transition"
                 >
@@ -186,7 +186,7 @@ function Dashboard() {
 
                 <button
                   onClick={() =>
-                    toast.info("⚙ Ops! Funcionalidade em construção.")
+                    toast.info("Ops! Funcionalidade em construção.")
                   }
                   className="w-full text-left px-4 py-2 rounded-lg hover:bg-[#FF0066]/20 transition"
                 >
@@ -194,7 +194,7 @@ function Dashboard() {
                 </button>
                 <button
                   onClick={() =>
-                    toast.info("⚙ Ops! Funcionalidade em construção.")
+                    toast.info("Ops! Funcionalidade em construção.")
                   }
                   className="w-full text-left px-4 py-2 rounded-lg hover:bg-[#FF0066]/20 transition"
                 >
@@ -202,7 +202,7 @@ function Dashboard() {
                 </button>
                 <button
                   onClick={() =>
-                    toast.info("⚙ Ops! Funcionalidade em construção.")
+                    toast.info("Ops! Funcionalidade em construção.")
                   }
                   className="w-full text-left px-4 py-2 rounded-lg hover:bg-[#FF0066]/20 transition"
                 >
@@ -256,7 +256,7 @@ function Dashboard() {
                     <nav className="space-y-4">
                       <button
                         onClick={() =>
-                          toast.info("⚙ Ops! Funcionalidade em construção.")
+                          toast.info("Ops! Funcionalidade em construção.")
                         }
                         className="w-full text-left px-4 py-2 rounded-lg hover:bg-[#FF0066]/20 transition"
                       >
@@ -270,7 +270,7 @@ function Dashboard() {
                       </button>
                       <button
                         onClick={() =>
-                          toast.info("⚙ Ops! Funcionalidade em construção.")
+                          toast.info("Ops! Funcionalidade em construção.")
                         }
                         className="w-full text-left px-4 py-2 rounded-lg hover:bg-[#FF0066]/20 transition"
                       >
@@ -278,7 +278,7 @@ function Dashboard() {
                       </button>
                       <button
                         onClick={() =>
-                          toast.info("⚙ Ops! Funcionalidade em construção.")
+                          toast.info("Ops! Funcionalidade em construção.")
                         }
                         className="w-full text-left px-4 py-2 rounded-lg hover:bg-[#FF0066]/20 transition"
                       >
@@ -286,7 +286,7 @@ function Dashboard() {
                       </button>
                       <button
                         onClick={() =>
-                          toast.info("⚙ Ops! Funcionalidade em construção.")
+                          toast.info("Ops! Funcionalidade em construção.")
                         }
                         className="w-full text-left px-4 py-2 rounded-lg hover:bg-[#FF0066]/20 transition"
                       >
@@ -366,13 +366,13 @@ function Dashboard() {
                       return (
                         <tr key={t.id}>
                           <td className="py-3">
-                            {t.dataTransacao
-                              ? new Date(t.dataTransacao).toLocaleString(
+                            {t.createdAt
+                              ? new Date(t.createdAt).toLocaleString(
                                   "pt-BR"
                                 )
                               : ""}
                           </td>
-                          <td>{t.descricao}</td>
+                          <td>{t.description}</td>
                           <td
                             className={
                               isEntrada ? "text-green-400" : "text-red-400"
