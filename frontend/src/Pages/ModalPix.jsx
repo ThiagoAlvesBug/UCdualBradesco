@@ -1,6 +1,7 @@
 import { X } from "lucide-react";
 import Modal from "../components/Modal";
 import { useState } from "react";
+import {toast} from "react-toastify";
 
 function ModalPix({ isOpen, onClose, callback }) {
   const [loading, setLoading] = useState(false);
@@ -57,16 +58,9 @@ function ModalPix({ isOpen, onClose, callback }) {
                   const valorPix = parseFloat(e.target.valorPix.value);
 
                   if (!emailDestino || valorPix <= 0) {
-                    alert("Preencha e-mail e valor corretamente.");
+                    toast.warn("Preencha e-mail e valor corretamente.");
                     return;
                   }
-
-                  console.log(
-                    "Enviando Pix para:",
-                    emailDestino,
-                    "Valor:",
-                    valorPix
-                  );
 
                   try {
                     setLoading(true);
@@ -92,17 +86,14 @@ function ModalPix({ isOpen, onClose, callback }) {
                     const data = await response.json();
 
                     if (!response.ok) {
-                      console.error("Erro na resposta do servidor:", data.message);
-                      alert("Erro ao enviar Pix: " + data.message);
+                      toast.error("Erro ao enviar Pix: " + data.message);
                       throw new Error(response);
                     }
 
-                    console.log(data);
-
-                    alert("Pix enviado com sucesso!");
+                    toast.success("Pix enviado com sucesso!");
                     onClose();
                   } catch (error) {
-                    console.error(error);
+                    toast.error(error);
                   } finally {
                     setLoading(false);
                   }
@@ -152,7 +143,7 @@ function ModalPix({ isOpen, onClose, callback }) {
                   <button
                     type="button"
                     className="rounded-lg px-4 py-2 border border-white/15 text-gray-200 hover:bg-white/5 transition"
-                    onClick={() => setIsModalOpen(false)}
+                    onClick={() => onClose()}
                   >
                     Cancelar
                   </button>

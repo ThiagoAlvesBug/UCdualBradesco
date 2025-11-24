@@ -15,9 +15,6 @@ function Login() {
 
   try {
     const data = await login({ email, password: senha });
-
-    console.log("Dados recebidos do servidor:", data);
-
     // Salvar no localStorage
     localStorage.setItem("token", data.token);
     localStorage.setItem("userId", data.userId);

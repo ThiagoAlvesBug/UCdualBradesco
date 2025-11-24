@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import ModalPix from "./ModalPix";
+import { toast } from "react-toastify";
 
 function Dashboard() {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,7 +37,7 @@ function Dashboard() {
         const data = await response.json();
         setUser(data);
       } catch (error) {
-        console.error("Erro ao buscar usuário:", error);
+        toast.error("Erro ao buscar usuário: " + error);
         navigate("/login");
       }
     };
@@ -68,7 +69,7 @@ function Dashboard() {
 
         setSaldo(updatedSaldo);
       } catch (error) {
-        console.error("Erro ao carregar transações:", error);
+        toast.error("Erro ao carregar transações: " + error);
       }
     };
 
@@ -78,7 +79,7 @@ function Dashboard() {
   // 🔥 3. ADICIONAR SALDO
   const handleAddSaldo = async () => {
     if (!valor || isNaN(valor) || parseFloat(valor) <= 0) {
-      alert("Digite um valor válido.");
+      toast.info("Digite um valor válido.");
       return;
     }
 
@@ -126,10 +127,9 @@ function Dashboard() {
       const transData = await responseTrans.json();
       setTransacoes(transData);
 
-      alert("Saldo adicionado!");
+      toast.success("Saldo adicionado!");
     } catch (error) {
-      console.error(error);
-      alert("Erro ao adicionar saldo.");
+      toast.error(`Erro ao adicionar saldo: ${error}`);
     } finally {
       setLoading(false);
     }
@@ -168,7 +168,12 @@ function Dashboard() {
               </h1>
 
               <nav className="space-y-3">
-                <button className="w-full text-left px-4 py-2 rounded-lg hover:bg-[#FF0066]/20 transition">
+                <button
+                  onClick={() =>
+                    toast.info("⚙ Ops! Funcionalidade em construção.")
+                  }
+                  className="w-full text-left px-4 py-2 rounded-lg hover:bg-[#FF0066]/20 transition"
+                >
                   Visão Geral
                 </button>
 
@@ -179,13 +184,28 @@ function Dashboard() {
                   Transferência via Pix
                 </button>
 
-                <button className="w-full text-left px-4 py-2 rounded-lg hover:bg-[#FF0066]/20 transition">
+                <button
+                  onClick={() =>
+                    toast.info("⚙ Ops! Funcionalidade em construção.")
+                  }
+                  className="w-full text-left px-4 py-2 rounded-lg hover:bg-[#FF0066]/20 transition"
+                >
                   Extrato
                 </button>
-                <button className="w-full text-left px-4 py-2 rounded-lg hover:bg-[#FF0066]/20 transition">
+                <button
+                  onClick={() =>
+                    toast.info("⚙ Ops! Funcionalidade em construção.")
+                  }
+                  className="w-full text-left px-4 py-2 rounded-lg hover:bg-[#FF0066]/20 transition"
+                >
                   Cartões
                 </button>
-                <button className="w-full text-left px-4 py-2 rounded-lg hover:bg-[#FF0066]/20 transition">
+                <button
+                  onClick={() =>
+                    toast.info("⚙ Ops! Funcionalidade em construção.")
+                  }
+                  className="w-full text-left px-4 py-2 rounded-lg hover:bg-[#FF0066]/20 transition"
+                >
                   Configurações
                 </button>
               </nav>
@@ -234,19 +254,42 @@ function Dashboard() {
                     </h1>
 
                     <nav className="space-y-4">
-                      <button className="w-full text-left px-4 py-2 rounded-lg hover:bg-[#FF0066]/20 transition">
+                      <button
+                        onClick={() =>
+                          toast.info("⚙ Ops! Funcionalidade em construção.")
+                        }
+                        className="w-full text-left px-4 py-2 rounded-lg hover:bg-[#FF0066]/20 transition"
+                      >
                         Visão Geral
                       </button>
-                      <button className="w-full text-left px-4 py-2 rounded-lg hover:bg-[#FF0066]/20 transition">
+                      <button
+                        onClick={() => setIsModalOpen(true)}
+                        className="w-full text-left px-4 py-2 rounded-lg hover:bg-[#FF0066]/20 transition"
+                      >
                         Transferência via Pix
                       </button>
-                      <button className="w-full text-left px-4 py-2 rounded-lg hover:bg-[#FF0066]/20 transition">
+                      <button
+                        onClick={() =>
+                          toast.info("⚙ Ops! Funcionalidade em construção.")
+                        }
+                        className="w-full text-left px-4 py-2 rounded-lg hover:bg-[#FF0066]/20 transition"
+                      >
                         Extrato
                       </button>
-                      <button className="w-full text-left px-4 py-2 rounded-lg hover:bg-[#FF0066]/20 transition">
+                      <button
+                        onClick={() =>
+                          toast.info("⚙ Ops! Funcionalidade em construção.")
+                        }
+                        className="w-full text-left px-4 py-2 rounded-lg hover:bg-[#FF0066]/20 transition"
+                      >
                         Cartões
                       </button>
-                      <button className="w-full text-left px-4 py-2 rounded-lg hover:bg-[#FF0066]/20 transition">
+                      <button
+                        onClick={() =>
+                          toast.info("⚙ Ops! Funcionalidade em construção.")
+                        }
+                        className="w-full text-left px-4 py-2 rounded-lg hover:bg-[#FF0066]/20 transition"
+                      >
                         Configurações
                       </button>
                     </nav>
@@ -281,7 +324,7 @@ function Dashboard() {
           <div className="bg-[#0c0c22] p-6 rounded-xl shadow-lg mb-10 text-center md:text-left">
             <h3 className="text-lg text-gray-400 mb-2">Saldo disponível</h3>
 
-            <p className="text-4xl font-bold text-[#00ff9d]">
+            <p className="text-3xl font-bold text-[#00ff9d]">
               {saldo != null
                 ? `R$ ${Number(saldo).toLocaleString("pt-BR", {
                     minimumFractionDigits: 2,
